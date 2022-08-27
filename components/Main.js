@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Portfolio from './Portfolio'
-// import Promos from './Promos'
+import Promos from './Promos'
 
 const Main = ({ twTokens, sanityTokens, walletAddress }) => {
     return (
@@ -10,7 +10,7 @@ const Main = ({ twTokens, sanityTokens, walletAddress }) => {
                 sanityTokens={sanityTokens}
                 walletAddress={walletAddress}
             />
-            {/* <Promos /> */}
+            <Promos />
         </Wrapper>
     )
 }
