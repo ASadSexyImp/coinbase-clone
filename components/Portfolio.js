@@ -1,11 +1,45 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { coins } from '../static/coins'
 import Coin from './Coin'
 import BalanceChart from './BalanceChart'
+import { ThirdwebSDK } from '@3rdweb/sdk'
+import { ethers } from 'ethers'
+
+const sdk = new ThirdwebSDK(
+    new ethers.Wallet(
+        process.env.NEXT_PUBLIC_METAMASK_KEY,
+        ethers.getDefaultProvider(
+            process.env.PROVIDER_URL
+        )
+    )
+)
 
 const Portfolio = () => {
+    // const [walletBalance, setWalletBalance] = useState(0)
+    // const [sender] = useState(walletAddress)
+    const [sanityTokens, setSanityTokens] = useState([])
+    const [thirdWebTokens, setThirdWebTokens] = useState([])
+
+    useEffect(() => {
+        const getSanityAndThirdWebTokens = async () => {
+            const coins = await fetch(
+                process.env.COIN_API
+            )
+
+            const sanityTokens = (await coins.json()).result
+            setSanityTokens(sanityTokens)
+
+            setThirdWebTokens(
+                sanityTokens.map(token => sdk.getTokenModule(token.contractAddress))
+            )
+
+        }
+
+        getSanityAndThirdWebTokens()
+    }, [])
+
     return (
         <Wrapper>
             <Content>

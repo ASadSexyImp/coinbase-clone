@@ -1,15 +1,29 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import styled from 'styled-components'
 import Main from '../components/Main'
 import Sidebar from '../components/Sidebar'
+import { ThirdwebSDK } from '@3rdweb/sdk'
+import { ethers } from 'ethers'
+
+const sdk = new ThirdwebSDK(
+    new ethers.Wallet(
+        process.env.NEXT_PUBLIC_METAMASK_KEY,
+        ethers.getDefaultProvider(
+            process.env.PROVIDER_URL
+        )
+    )
+)
 
 const Dashboard = ({address}) => {
+    const [sanityTokens, setSanityTokens] = useState([])
+    const [thirdWebTokens, setThirdWebTokens] = useState([])
+
     return (
         <Wrapper>
             <Sidebar/>
             <MainContainer>
-                <Header />
+                <Header walletAddress={address}/>
                 <Main />
             </MainContainer>
         </Wrapper>
